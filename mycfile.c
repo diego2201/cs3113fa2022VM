@@ -1,10 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define PI 3.14159265358979
 #define HALFOF(x) x/2
 #define TRUE 1
 #define FALSE 0
+
+#define MAX_NAME 60
+
+struct roster
+{
+	short number;
+	char team[MAX_NAME];
+};
+
+typedef struct roster ros;
+
+int printroster(roster r)
+{
+	printf("<%d: %s\n", r.number, r.team);
+	// r.number = 2
+	// printf("\t<%d: %s>\n", r.number, r.team);
+	return 0;
+}
 
 int main(int argc, char** argv, char** envp)
 {
@@ -86,6 +105,57 @@ int main(int argc, char** argv, char** envp)
 	
 	int **qrcode = &label;
 	printf("%d %d %d\n", box, *label, **qrcode);
+
+	// Arrays
+	/*char grades[4];
+	grades[0] = 'a';
+	grades[1] = 'b';
+	grades[2] = 'c';
+	grades[3] = 'd';
+	*/
+
+	char grades[] = {'a', 'b', 'c', 'd'};
+
+	printf("grades: %p, %c\n", grades, grades[0]);
+	for(i = 0; i < 4; i++)
+	{
+		printf("%d: %c\n", i, grades[i]);
+	}
+
+	// structures
+	
+	ros r;
+	r.number = 24;
+	//r.name = "Sooner";
+	strncpy(r.team, "Sooners", MAX_NAME);
+	
+	printroster(r);
+
+	ros *org;
+	org = &r;
+	
+	printroster(*org);
+
+	// dynamic allocation
+	// calloc one way to reserve space on the heap
+	org = calloc(32, sizeof(ros));
+
+	org[0].number = 13;
+	strncpy(org[0].team, "Doplhins", MAX_NAME);
+
+	org[1].number = 3;
+        strncpy(org[1].team, "Heat", MAX_NAME);
+
+	org[2].number = 0;
+        strncpy(org[2].team, "Marlins", MAX_NAME);
+
+	org[3].number = 9;
+        strncpy(org[3].team, "Sooners", MAX_NAME);
+
+	for(int i = 0; i < 4; ++i)
+	{
+		printroster(org[i]);
+	}
 
 	return 0;
 }
